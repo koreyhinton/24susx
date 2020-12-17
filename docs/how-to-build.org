@@ -1,1 +1,21 @@
 
+* Pixelate a photo background image
+#+BEGIN_SRC sh
+# if necessary for webp files, convert to jpg first:
+mogrify -format jpg photoname.webp
+
+PHIXEL_PATH=~/gh/phixelgator/phixelgator.py  # path to phixelgator
+PHOTO_IN=photo.jpg  # existing file to read in
+PHOTO_OUT=photo.png # new file to create
+python $PHIXEL_PATH -b4 -p atari2600 $PHOTO_IN $PHOTO_OUT
+#+END_SRC
+
+* See all dimensions of files in dir
+#+BEGIN_SRC sh
+identify -format '%wx%h\n' *.jpg | sort
+#+END_SRC
+
+* Crop all to the same height
+#+BEGIN_SRC sh
+mogrify -gravity South -crop 1280x720+0+0 *.png
+#+END_SRC
