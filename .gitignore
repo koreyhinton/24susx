@@ -2,3 +2,5 @@
 *.webp
 *.jpg
 *.png
+*#*
+.backup
