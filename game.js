@@ -1,6 +1,13 @@
 /*BEGIN*/document.addEventListener('DOMContentLoaded', function() {
 
-var debug=true
+var idx="D9";
+var debug=false
+var dbg_cell=new URL(location.href).searchParams.get("c");
+console.log(dbg_cell)
+if (dbg_cell != null) {
+    debug=true;
+    idx=dbg_cell
+}
 
 
 var instructions="Welcome amateur detective! Are you ready for your first assignment? Your assignment is to find which traveling merchant is the toy thief. Find all 24 suspects to help you make your decision. Use the left and right arrow controls to steer your vehicle. That's right you get to drive your own vehicle! Don't get too excited it's just a starter vehicle...Starting in.......... Three.............................. Two.............................. One.............................."
@@ -9,12 +16,12 @@ if (debug) instructions=""
 
 
 var angle=225;
+var px=-1  //player x, each gameloop needs position data immediately
+var py=-1
 
 function load_game() {
     
 }
-
-var idx="D9";
 var suspects=0;
 
 function dbg() {
@@ -87,6 +94,8 @@ function inside_rect(pts, rect) {
         var pt=pts[i];
         if ( pt.x>rect.x1 && pt.x<rect.x2 &&
              pt.y>rect.y1 && pt.y<rect.y2) {
+            if (debug)console.log("pt:"+pt.x+","+pt.y+" x1:"+rect.x1+" y1:"+rect.y1+" x2:"+rect.x2+" y2:"+rect.y2)
+            console.log(transitioning)
             return true;
         }
     }
@@ -121,22 +130,43 @@ function quadrants_simple_polygons(pts, polys) {
     }
     return quads;
 }
-
+transitioning=false
+function setp(x,y,player) {
+    px=x
+    py=y
+    if (player==null) {
+        player=document.getElementById("player");
+    }
+    player.style.left=x+"px";
+    player.style.top=y+"px";
+}
 function shift_screen(from, to) {
-   idx=to
-   document.getElementById("cell").innerHTML=to
-   var game=document.getElementById("game");
-   game.style.backgroundImage="url('images/background/"+map[idx].img+"')"
-   var player=document.getElementById("player");
-   player.style.left=map[idx].entrances[from].x+"px";
-   player.style.top=map[idx].entrances[from].y+"px";
-   if (debug) dbg()
-   //console.log(map[idx].entrances[from].x+"px")
-   if (map[idx].suspects.length>0) {
-       map[idx].suspects.shift()
-       suspects+=1
-       document.getElementById("sus").innerHTML="Suspects: "+suspects
-   }
+   transitioning=true
+   // shifting screens HAS to wait a bit using setTimeout,
+   // this is because previous game loops will linger
+   // and the player will unintentionally skip a cell,
+   // ie: when the cell you are entering horizontally
+   // has symmetric left and right entrance and exit edges (E7)
+   setTimeout(function() {
+       lastX=-1;
+       idx=to
+       setp(map[idx].entrances[from].x, map[idx].entrances[from].y)
+       console.log(from+"->"+to)
+       document.getElementById("cell").innerHTML=to
+       var game=document.getElementById("game");
+       /*var player=document.getElementById("player");
+       player.style.left=map[idx].entrances[from].x+"px";
+       player.style.top=map[idx].entrances[from].y+"px";*/
+       game.style.backgroundImage="url('images/background/"+map[idx].img+"')"
+       if (debug) dbg()
+       //console.log(map[idx].entrances[from].x+"px")
+       if (map[idx].suspects.length>0) {
+           map[idx].suspects.shift()
+           suspects+=1
+           document.getElementById("sus").innerHTML="Suspects: "+suspects
+       }
+       transitioning=false
+   },100);
 }
 
 function mousedown(e) {
@@ -167,6 +197,7 @@ function keydown(e) {
 var lastX=500;
 var lastY=530;
 function gameloop() {
+    if (transitioning)return;
     var el=document.getElementById("player");
     var dx=0; var dy=0;
     if (angle>90 && angle<270) {
@@ -186,8 +217,8 @@ function gameloop() {
         dy=-1;
     }
     if (debug) {dx*=2;dy*=2}
-    var x=parseInt(el.style.left.replace("px",""));
-    var y=parseInt(el.style.top.replace("px",""));
+    var x=px//parseInt(el.style.left.replace("px",""));
+    var y=py//parseInt(el.style.top.replace("px",""));
     var road=map[idx];
     var img=document.getElementById("player");
     img.style.zIndex="1000";
@@ -203,8 +234,9 @@ function gameloop() {
     ]
     var valid=inside_simple_polygons(pts,map[idx].road)
     if (valid) {
-        el.style.top=(y+dy)+"px";
-        el.style.left=(x+dx)+"px";
+        setp(x+dx,y+dy,el)
+        /*el.style.top=(y+dy)+"px";
+        el.style.left=(x+dx)+"px";*/
         lastX=x;
         lastY=y;
         var rect={}
@@ -221,10 +253,12 @@ function gameloop() {
         /*var quads = quadrants_simple_polygons(pts,map[idx])
         var quad1=quads.quad1;var quad2=quads.quad2;var quad3=quads.quad3;
             var quad4=quads.quad4;*/
+        if (lastX<0)return;
         var dy=(lastY-y)*4
         var dx=(lastX-x)*4
+        setp(x+dx,y+dy)/*
         el.style.top=(y+dy)+"px"
-        el.style.left=(x+dx)+"px"
+        el.style.left=(x+dx)+"px"*/
         //q1 and q3 are false
         //console.log(quads)
         //return
@@ -267,13 +301,14 @@ var intId=setInterval(function(){
         clearInterval(intId);
         var game=document.getElementById("game");
         game.innerHTML="";
-        game.style.backgroundImage="url('images/background/lawn-3291164_1280.png')"
+        game.style.backgroundImage="url('images/background/"+map[idx].img+"')"
         var el=document.createElement("img");
         el.id="player";
         el.src="images/player225.png";
         el.style.position="absolute";
-        el.style.left="500px";
-        el.style.top="530px";
+        setp(500,530,el)
+        /*el.style.left="500px";
+        el.style.top="530px";*/
         game.appendChild(el);
 
         /**/var sus=document.createElement("div");
@@ -288,7 +323,7 @@ var intId=setInterval(function(){
         cell.id="cell"
         cell.style.left="1200px";
         cell.style.top="0px";
-        cell.innerHTML="D9"
+        cell.innerHTML=idx;
         game.appendChild(cell);
 
         if (debug) dbg();
@@ -302,5 +337,7 @@ var intId=setInterval(function(){
     instructions=instructions.substring(1);
     //setTimeout(load_game, 2400);
 }, 32);
+
+
 
 /*END**/});
