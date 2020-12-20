@@ -10,7 +10,7 @@ if (dbg_cell != null) {
 }
 
 
-var instructions="Welcome amateur detective! Are you ready for your first assignment? Your assignment is to find which traveling merchant is the toy thief. Find all 24 suspects to help you make your decision. Use the left and right arrow controls to steer your vehicle. That's right you get to drive your own vehicle! Don't get too excited it's just a starter vehicle...Starting in.......... Three.............................. Two.............................. One.............................."
+var instructions="Welcome mouse detective! Are you ready for your first assignment? There is an elf hiding behind a mask that is causing all sorts of mayhem, stealing toys and stealing the holiday joy. Your assignment is to find which elf is hiding behind the mask. Use the left and right arrow controls to steer your vehicle. Starting in.......... Three.............................. Two.............................. One.............................."
 
 if (debug) instructions=""
 
@@ -130,6 +130,99 @@ function quadrants_simple_polygons(pts, polys) {
     }
     return quads;
 }
+
+function sus_animation() {
+
+    var susw=206
+    var sush=340
+    var y=(720-sush)
+    var sus=document.createElement("div")
+    //sus.innerHTML="<img src='images/balloon-36286__340.png'>"
+    sus.zIndex=100000
+    sus.style.width=(susw)+"px"
+    sus.style.height=(sush)+"px"
+    sus.style.position="absolute"
+    sus.style.left=(1280-susw)+"px"
+    sus.style.top=(y)+"px"
+    document.getElementById("game").appendChild(sus)
+    var hat=document.createElement("div")
+    hat.style.position="relative"
+    hat.style.left="78px";
+    hat.style.top="296px";
+    hat.style.width="48px"
+    hat.style.height="48px"
+    hat.zIndex=200001
+    hat.innerHTML="<img src='images/elf"+idx+".png'>"
+    sus.appendChild(hat)
+    
+    var balloon=document.createElement("div")
+    balloon.zIndex=200000
+    balloon.style.position="relative"
+    balloon.style.left="0px";
+    balloon.style.top="0px";
+    balloon.innerHTML="<img src='images/balloon-36286__340.png'>"
+    sus.appendChild(balloon)
+
+    sus.className="sus";
+
+    var sus2=document.createElement("div");
+    sus2.className="sus";
+    //sus.innerHTML="<img src='images/balloon-36286__340.png'>"
+    sus2.zIndex=100000
+    sus2.style.width=(susw)+"px"
+    sus2.style.height=(sush)+"px"
+    sus2.style.position="absolute"
+    sus2.style.left=(1280-susw)+"px"
+    sus2.style.top=(y)+"px"
+    var balloon2=document.createElement("div")
+    balloon2.zIndex=200000
+    balloon2.style.position="relative"
+    balloon2.style.left="0px";
+    balloon2.style.top="0px";
+    balloon2.innerHTML="<img src='images/balloon-36286__340.png'>"
+    var hat2=document.createElement("div")
+    hat2.style.position="relative"
+    hat2.style.left="78px";
+    hat2.style.top="296px";
+    hat2.style.width="48px"
+    hat2.style.height="48px"
+    hat2.zIndex=200001
+    hat2.innerHTML="<img src='images/mask.png'>"
+    sus2.appendChild(hat2)
+    sus2.appendChild(balloon2)
+    //game.appendChild(sus2)
+    //sus2.style.visibility="hidden"
+    var removedEarly=false
+    var animIntId=setInterval(function() {
+        if (transitioning || y<-sush) {
+            if (transitioning) {
+                //sus.visibility="hidden"
+                //sus2.visibility="hidden"
+                sus.remove();removedEarly=true
+                return;
+            }
+            clearInterval(animIntId)
+            if (!removedEarly)            game.appendChild(sus2)
+            //if (sus.visibility!="hidden"){sus2.style.visibility="visible"}
+            //sus.visibility="hidden"
+            sus.remove()
+            y=(720-sush)
+            var animIntId2=setInterval(function() {
+                if (transitioning || y<-sush) {
+                    clearInterval(animIntId2)
+                    sus.remove()
+                    sus2.remove()
+                }
+                y-=1
+                sus2.style.top=y+"px"
+            },10); 
+        }
+        y-=2
+        sus.style.top=y+"px"
+    }, 10);
+
+}
+
 transitioning=false
 function setp(x,y,player) {
     px=x
@@ -142,6 +235,8 @@ function setp(x,y,player) {
 }
 function shift_screen(from, to) {
    transitioning=true
+   var suss=document.getElementsByClassName("sus")
+   for (var i=0;i<suss.length;i++){suss[i].remove()}
    // shifting screens HAS to wait a bit using setTimeout,
    // this is because previous game loops will linger
    // and the player will unintentionally skip a cell,
@@ -160,12 +255,23 @@ function shift_screen(from, to) {
        game.style.backgroundImage="url('images/background/"+map[idx].img+"')"
        if (debug) dbg()
        //console.log(map[idx].entrances[from].x+"px")
+       var susFlag=map[idx].suspects.length>0;
        if (map[idx].suspects.length>0) {
+           if (suspects==23) {
+               var cell="A1"
+               for (var i=0;i<suspectsList.length;i++){
+                   if (map[suspectsList[i]].suspects.length>0) {
+                       cell=suspectsList[i];
+                   }
+               }
+               location.href="end.html?s="+cell
+           }
            map[idx].suspects.shift()
            suspects+=1
            document.getElementById("sus").innerHTML="Suspects: "+suspects
        }
        transitioning=false
+       if (susFlag) { sus_animation() }
    },100);
 }
 

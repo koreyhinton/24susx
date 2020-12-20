@@ -4,6 +4,69 @@
 
 AGPL v3 License, see COPYING file
 
+# Included Foreground Image Credits
+
+pixabay license
+
+balloon-36286__340.webp https://cdn.pixabay.com/photo/2012/04/18/00/31/balloon-36286__340.png
+
+mask.png https://cdn.pixabay.com/photo/2020/09/28/08/38/halloween-5609078__340.png
+
+elfC9.png https://cdn.pixabay.com/photo/2015/12/11/07/27/elf-1087758__340.png
+
+elfA3.png  https://cdn.pixabay.com/photo/2019/11/23/07/57/elf-4646498__340.png
+
+elfB2.png  https://cdn.pixabay.com/photo/2015/11/25/14/46/holidays-1062228__340.png
+
+elfC1.png https://cdn.pixabay.com/photo/2019/10/02/18/21/elf-4521669_1280.png
+
+elfD2.png https://cdn.pixabay.com/photo/2012/04/18/03/31/elf-36756_1280.png
+
+elfD3.png https://cdn.pixabay.com/photo/2020/07/10/16/57/christmas-5391290_1280.png
+
+elfA4.png https://cdn.pixabay.com/photo/2019/12/13/18/49/gnome-4693644__340.png
+
+elfA6.png https://cdn.pixabay.com/photo/2018/12/07/21/38/christmas-3862474_1280.png
+
+elfB7.png https://cdn.pixabay.com/photo/2017/11/08/22/09/christmas-2931821_1280.png
+
+elfC5.png https://cdn.pixabay.com/photo/2019/12/18/06/08/christmas-4703190__340.jpg
+
+
+elfD6.png https://cdn.pixabay.com/photo/2019/12/05/20/19/christmas-4676049_1280.jpg
+
+
+elfF6.png https://cdn.pixabay.com/photo/2020/05/22/10/34/elf-5204923_1280.png
+
+elfG6.png https://cdn.pixabay.com/photo/2020/11/11/00/05/elf-5731228__340.png
+
+elfF7.png https://cdn.pixabay.com/photo/2019/11/04/18/20/elf-4601789__340.png
+
+elfH4.png https://cdn.pixabay.com/photo/2017/11/13/20/11/elf-2946674__340.png
+
+elfH7.png https://cdn.pixabay.com/photo/2019/12/27/03/21/elf-4721604__340.png
+
+elfI5.png https://cdn.pixabay.com/photo/2019/04/26/17/49/christmas-elf-4158158__340.png
+
+elfI6.png https://cdn.pixabay.com/photo/2016/06/02/06/10/christmas-1430335_1280.png
+
+
+
+elfA11.png https://cdn.pixabay.com/photo/2015/12/04/11/27/eleven-1076420__340.png
+
+elfA12.png https://cdn.pixabay.com/photo/2019/12/14/18/58/elf-4695524__340.jpg
+
+elfC11.png https://cdn.pixabay.com/photo/2014/12/02/10/14/eleven-553756__340.png
+
+elfC13.png https://cdn.pixabay.com/photo/2016/03/31/18/16/boy-1294259_1280.png
+
+elfD12.png https://cdn.pixabay.com/photo/2020/11/09/10/06/elf-5726115__340.png
+
+elfD4.png https://cdn.pixabay.com/photo/2016/04/01/00/06/blonde-1298003_1280.png
+
+
+
+
 # Included Background Image Credits
 
 The background images are mostly public domain images, visit links to know for sure, some are Pixabay license.
